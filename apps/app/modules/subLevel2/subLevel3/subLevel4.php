@@ -1,5 +1,5 @@
 <?php
-namespace \app\module\subLevel2\subLevel3;
+namespace app\module\subLevel2\subLevel3;
 class subLevel4
 {
     public static $requires = [
