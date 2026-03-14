@@ -1,3 +1,91 @@
 # Fantasy-CORE
 
-![Github All Releases](https://img.shields.io/github/downloads/devkoks/Fantasy-CORE/total.svg) ![GitHub release](https://img.shields.io/github/release/devkoks/Fantasy-CORE.svg) ![license](https://img.shields.io/github/license/devkoks/Fantasy-CORE.svg) ![Travis](https://img.shields.io/travis/devkoks/Fantasy-CORE.svg)
+![Downloads](https://img.shields.io/github/downloads/koksnull/Fantasy-CORE/total.svg) ![Release](https://img.shields.io/github/release/koksnull/Fantasy-CORE.svg) ![License](https://img.shields.io/github/license/koksnull/Fantasy-CORE.svg)
+
+Крошечный, лёгкий PHP-фреймворк/скелет для простых веб-приложений и одностраничных сайтов. Предназначен для быстрой сборки приложений с модульной структурой, шаблонизатором и минимальной конфигурацией.
+
+Подходит для проприетарных коробочных продуктов: в проекте чётко разделена вёрстка (шаблоны в `tpl/`) и PHP-бэкенд, что позволяет при необходимости поставлять зашифрованный или собранный PHP-код отдельно от шаблонов и статических ресурсов.
+
+Кроме того, благодаря своей простоте и лёгкой архитектуре проект работает очень быстро и экономно использует ресурсы — это делает его подходящим для сценариев, где важна производительность.
+
+**Ключевые возможности**
+- Лёгкая модульная структура приложения
+- Простая система шаблонов (`tpl/`)
+- Встроенные вспомогательные классы в `core/modules/`
+- Быстрый запуск на локальном PHP-сервере
+
+**Быстрый старт**
+
+1. Требования:
+	- PHP 7.2+ (рекомендуется 7.4+)
+	- Веб-сервер или встроенный сервер PHP
+
+2. Клонировать репозиторий и перейти в папку проекта:
+
+```bash
+git clone https://github.com/koksnull/Fantasy-CORE.git
+cd Fantasy-CORE
+```
+
+3. Запустить встроенный сервер PHP для разработки:
+
+```bash
+php -S localhost:8000 -t .
+```
+
+Откройте http://localhost:8000 в браузере.
+
+**Конфигурация**
+- Общие настройки находятся в [core/conf.php](core/conf.php).
+- Настройки приложения (пример) — [apps/app/conf.json](apps/app/conf.json).
+
+**Структура проекта (основное)**
+- `index.php` — корневой роутер/точка входа
+- [apps/app/index.php](apps/app/index.php) — пример приложения
+- [core/index.php](core/index.php) — ядро приложения
+- `functions/` — утилиты (например, [functions/generateGUID.php](functions/generateGUID.php))
+- `core/modules/` — встроенные классы (`app.class.php`, `http.class.php`, `MySQL.class.php`, и т. д.)
+- `tpl/` — шаблоны: основной `home.tpl` и `tpl/include/` (шапка/футер)
+
+**Модули и плагины**
+Модули помещаются в `apps/<your-app>/modules/`. Пример: [apps/app/modules/main.php](apps/app/modules/main.php). Подуровни модулей также поддерживаются (см. `subLevel2/subLevel3.php`).
+
+В папке `apps/app` предоставлен пример приложения с динамичной маршрутизацией по модулям — смотрите `apps/app/index.php` и содержимое `apps/app/modules/` для примера того, как подключаются и вызываются модули динамически.
+
+**Мульти-приложения и маршрутизация**
+- В папке `apps/` можно размещать несколько приложений (например `apps/shop`, `apps/admin`).
+- Маршрутизация и выбор приложения выполняются через конфигурацию `$CoreConf` — указывайте `app.name` и `app.path` чтобы выбрать нужное приложение и путь к его точке входа.
+
+Пример конфигурации и запуска `core` для приложения `shop`:
+
+```php
+$CoreConf = [
+	'start-app' => true,
+	'load-tpl' => true,
+	'load-modules' => true,
+	'app' => [
+		'dir' => '/apps',
+		'name' => 'shop', // папка в apps/
+		'path' => '/shop/index.php' // точка входа приложения
+	]
+];
+
+include './core/index.php';
+new core($CoreConf);
+```
+
+- Ядро (`core`) можно запустить из любой точки кода: подключите `core/index.php` и создайте экземпляр `core` с нужной конфигурацией — это даёт гибкость при интеграции с существующими скриптами и при организации нескольких приложений в одном проекте.
+
+**Разработка**
+- Добавляйте новые модули в `apps/<your-app>/modules/`.
+- Для изменений шаблонов редактируйте файлы в `tpl/`.
+- Для добавления вспомогательных функций используйте `functions/`.
+
+**Вклад**
+PR и issue приветствуются. Оформляйте PR с описанием задачи и кратким примером использования.
+
+**Лицензия**
+Проект распространяется под лицензией, указанной в файле `LICENSE`.
+
+**Контакты**
+Если нужны вопросы или помощь — открывайте issue на GitHub или свяжитесь с автором репозитория.
