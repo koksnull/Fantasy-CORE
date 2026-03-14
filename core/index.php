@@ -1,7 +1,7 @@
 <?php
 class core
 {
-	const CORE_VERSION = 2.1;
+	const CORE_VERSION = 2.2;
 
 	const ERROR_MOD_NOT_LOADED = 1001;
 
@@ -33,10 +33,13 @@ class core
 		if(isset($this->modules[$name])) return true;
 		include $this->setting["DOCUMENT_ROOT"]."/core/modules/".$name.".class.php";
 		$module = '\\core\\module\\'.$name;
-		foreach($module::$requires["module"] as $modRequire)
-			$this->loadModule($modRequire);
-		foreach($module::$requires["functions"] as $functionRequire)
-			$this->loadFunction($functionRequire);
+		$this->modules[$name] = true;
+		if(isset($module::$requires["modules"]))
+			foreach($module::$requires["modules"] as $modRequire)
+				$this->loadModule($modRequire);
+		if(isset($module::$requires["functions"]))
+			foreach($module::$requires["functions"] as $functionRequire)
+				$this->loadFunction($functionRequire);
 	}
 
 	public function getModule($name)
@@ -79,7 +82,7 @@ class core
 
 	private function loadModules()
 	{
-	    foreach($this->appRequire["module"] as $moduleRequire)
+	    foreach($this->appRequire["modules"] as $moduleRequire)
 			$this->loadModule($moduleRequire);
 	    foreach($this->appRequire["functions"] as $functionRequire)
 	        $this->loadFunction($functionRequire);
@@ -91,7 +94,7 @@ class core
 	{
 	    foreach($this->appRequire["tpl"] as $name){
 			$fp = explode("/",$name);
-			$dir = $this->setting["DOCUMENT_ROOT"].$this->setting["app-dir"].$this->setting["template"]."/";
+			$dir = $this->setting["DOCUMENT_ROOT"].$this->setting["template"]."/";
 			if(count($fp)>1){
 				for($i=0;$i<count($fp)-1;$i++){
 					$dir .= $fp[$i]."/";

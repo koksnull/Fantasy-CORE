@@ -3,7 +3,7 @@ class app
 {
     private $module;
     private $mod;
-    public $require = ["module"=>["files","tpl",'users','http']];
+    public $require = ["modules"=>["files","tpl"]];
 
     public $core;
 	public $coreConf;
@@ -20,7 +20,6 @@ class app
     }
 	private function detectModule($URL)
     {
-
         $dmodule = $this->core->setting['DOCUMENT_ROOT'].$this->core->setting['app']['dir']."/app/modules/";
         if(count($URL) == 0) return "notfound";
         $dir = implode("/",$URL);
@@ -53,8 +52,8 @@ class app
 
     public function isCoreModuleLoaded(String $module)
     {
-        foreach($this->core->loadedModules as $loadedModule){
-            if($loadedModule == $module){
+        foreach($this->core->modules as $name => $loadedModule){
+            if($name == $module){
                 return true;
             }
         }
@@ -63,8 +62,8 @@ class app
 
     public function isCoreFunctionLoaded(String $function)
     {
-        foreach($this->core->loadedFunctions as $loadedFunction){
-            if($loadedFunction = $function){
+        foreach($this->core->functions as $loadedFunction){
+            if($loadedFunction == $function){
                 return true;
             }
         }
@@ -81,7 +80,7 @@ class app
             $module .= "\\".$m;
         }
         $module = "app\\module".$module;
-        $require = $module::require;
+        $require = $module::$requires;
         $require = array_merge_recursive($require,$this->require);
         return $require;
     }
