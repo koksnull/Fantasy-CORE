@@ -92,6 +92,7 @@ class core
 
 	private function loadTpl()
 	{
+		if(!isset($this->appRequire["tpl"])) return;
 	    foreach($this->appRequire["tpl"] as $name){
 			$fp = explode("/",$name);
 			$dir = $this->setting["DOCUMENT_ROOT"].$this->setting["template"]."/";
