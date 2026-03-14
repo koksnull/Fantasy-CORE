@@ -4,7 +4,7 @@ class notfound
 {
     public static $requires = [
         "tpl"=>[],
-        "module"=>[],
+        "modules"=>[],
         "functions"=>[]
     ];
 

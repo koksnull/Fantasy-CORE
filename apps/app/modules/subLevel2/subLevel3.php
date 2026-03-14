@@ -4,7 +4,7 @@ class subLevel3
 {
     public static $requires = [
         "tpl"=>["home"],
-        "module"=>["tpl"],
+        "modules"=>["tpl"],
         "functions"=>["generateGUID"]
     ];
     public $view = "";
